@@ -141,7 +141,7 @@ router.post("/login", function (req, res) {
 
 // get UserProfil API
 router.get("/profile", async function (req, res) {
-  //console.log(req.header["authorization"]);
+  console.log(req.headers, "inside profile backend");
   const authHeader = req.headers["authorization"];
   if (authHeader) {
     const token =  authHeader.substring(7, authHeader.length);
@@ -154,6 +154,7 @@ router.get("/profile", async function (req, res) {
             id:user.id,
           },
         });
+        console.log(userDetail);
         return res.status(200) .json({
           status: res.statusCode,
           data: userDetail,

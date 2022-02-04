@@ -36,12 +36,14 @@ export class AuthService {
 
   profile() {
     const token = localStorage.getItem('Token');
+    console.log(token, "Token");
     return this.http.get(`${this.url}/user/profile`, {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       }),
     })
+
     // .pipe(
     //   catchError((err) => {
     //     return new Observable((res) => {
@@ -108,6 +110,8 @@ export class AuthService {
           this.isUserLoggedIn$.next(true);
           this.router.navigate([""]);
           console.log("success");
+          console.log(tokenObject)
+          localStorage.setItem("Token", tokenObject.token);
           
         }),
         catchError(
