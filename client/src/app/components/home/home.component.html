@@ -1,1 +1,21 @@
-<p>home works!</p>
+<div class="container shadow-lg">
+    <div class="display">
+        <div class="img-view">
+            <img src= '{{ userData.image }}' class="img"/>
+            <input class="btn btn-primary" value="Change" type="file" multiple (change)="uploadImg($event)">
+        </div>
+        <hr>
+        <a routerLink="/showDetails"><button class="btn btn-primary edit-details"><i class="fas fa-edit"></i>Update Details</button></a>
+        <a routerLink=""><button class="btn btn-primary edit-details"><i class="fas fa-out"></i>Logout</button></a>
+        <div class="row details">
+            <div class="col-sm-6">
+                <p><i class="fas fa-user"></i>  Name:  {{userData.user_name}}</p>
+                <p><i class="fas fa-phone"></i>  Phone Number:  {{userData.number}}</p>
+                <p><i class="fas fa-envelope-open-text"></i>  Email: {{userData.email}}</p>
+            </div>
+            <div class="col-sm-6">
+                <p><strong><i class="fas fa-venus-mars"></i>  Gender:</strong>  {{userData.gender}}</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -16,17 +16,10 @@ router.post("/register", function (req, res) {
   console.log(name,password,email,number,gender,image);
   if (
     name == undefined ||
-    name == "" ||
-    password == undefined ||
-    password == "" ||
-    email == undefined ||
-    email == "" ||
-    number == undefined ||
-    number == "" ||
-    gender == undefined ||
-    gender == ""
+    name == ""
+    
   ) {
-    res.status(401).json({
+    res.status(204).json({
       message: "Fill All Fields",
       status: res.statusCode,
     });
@@ -65,7 +58,7 @@ router.post("/register", function (req, res) {
           });
         });
       } else {
-        res.status(401).json({
+        res.status(204).json({
           message: "Email already Taken",
           status: res.statusCode,
         });
@@ -73,10 +66,6 @@ router.post("/register", function (req, res) {
     });
   }
 });
-
-
-
-// Login API
 router.post("/login", function (req, res) {
   const {
     password,
@@ -94,8 +83,6 @@ router.post("/login", function (req, res) {
       status: res.statusCode,
     });
   } else {
-    // check mail in db or not
-
     UserModel.findOne({
       where: {
         email,
@@ -138,8 +125,6 @@ router.post("/login", function (req, res) {
     });
   }
 });
-
-// get UserProfil API
 router.get("/profile", async function (req, res) {
   console.log(req.headers, "inside profile backend");
   const authHeader = req.headers["authorization"];
@@ -176,5 +161,75 @@ router.get("/profile", async function (req, res) {
     }); 
   }
 });
+
+//update profile
+router.put("/profile/:id/update",  async function(req,res) {
+  const {
+    name,
+    password,
+    email, 
+    number, gender , image
+  } = req.body;
+  console.log(name,password,email,number,gender,image);
+  if (
+    name == undefined ||
+    name == "" ||
+    password == undefined ||
+    password == "" ||
+    email == undefined ||
+    email == "" ||
+    number == undefined ||
+    number == "" ||
+    gender == undefined ||
+    gender == ""
+  ) {
+    res.status(401).json({
+      message: "Fill All Fields",
+      status: res.statusCode,
+    });
+  } else {
+    UserModel.findOne({
+      attributes: ["user_name"],
+      where: {
+        email,
+      },
+    }).then((value) => {
+      if (value === null) {
+        //HASH THE PASSWORD
+        bcrypt.genSalt(10, function (err, salt) {
+          bcrypt.hash(password, salt, function (err, hash) {
+            // CRETAE RECORD IN DB
+            UserModel.update({
+                user_name: name,
+                email: email,
+                password: hash,
+                number: number,
+                gender:gender,
+                image: image,
+              })
+              .then((value) =>
+                res.status(201).json({
+                  message: "User updated Successfully",
+                  status: res.statusCode,
+                })
+              )
+              .catch((err) =>
+                res.status(404).json({
+                  message: "Something went wrong",
+                  status: res.statusCode,
+                })
+              );
+          });
+        });
+      } else {
+        res.status(401).json({
+          message: "Email already Taken",
+          status: res.statusCode,
+        });
+      }
+    });
+  }
+})
+
 
 module.exports = router;

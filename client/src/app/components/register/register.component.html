@@ -29,10 +29,9 @@
     <input matInput type="password" placeholder="Enter password..." formControlName="password">
 </mat-form-field>
 <!-- Image -->
-<mat-form-field>
-    <mat-label>Image</mat-label>
-    <input matInput placeholder="For Image" formControlName="image">
-</mat-form-field>
+<div class="img-view">
+    <input formControlName="image" class="btn btn-primary" value="Change" type="file" multiple (change)="uploadImg($event)">
+</div>
 
 <button color="blue" [disabled]="!registerForm.valid" mat-raised-button type="submit">Submit</button>
 </form>

@@ -56,6 +56,18 @@ export class AuthService {
     //   })
     // );
   }
+  ///error in this part
+  update(user: Omit<User, "id">) : Observable<User>{
+    console.log(user);
+    return  this.http.post<User>(`${this.url}/user/profile/update`, JSON.stringify(user), this.httpOptions)
+    .pipe(
+      first(), 
+      tap((tokenObject: any) => {
+        this.router.navigate(["login"]);
+      }),
+      catchError(this.errorHandlerService.handleError<User>("register") )
+    )
+  };
 
 
   //profile(){
@@ -81,15 +93,15 @@ export class AuthService {
       //);
   // }
 
-  update(): Observable<User[]> {
-    return this.http.get<User[]>(`${this.url}/user/update`)
-      .pipe(
-        tap((tokenObject: any) => {
-          console.log("update service");
-        }),
-       // catchError(this.errorHandlerService.handleError<User>('profile'))
-      );
-  }
+  // update(): Observable<User[]> {
+  //   return this.http.get<User[]>(`${this.url}/user/update`)
+  //     .pipe(
+  //       tap((tokenObject: any) => {
+  //         console.log("update service");
+  //       }),
+  //      // catchError(this.errorHandlerService.handleError<User>('profile'))
+  //     );
+  // }
 
   
   login(
